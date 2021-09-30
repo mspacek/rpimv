@@ -1,0 +1,68 @@
+RPi Zero W vs. RPi 4:
+
+* smaller
+* cheaper
+* lower power, no fan required
+* available
+* still has WLAN, easier to test, once up and running, only cable required is USB power vs. both USB power and ethernet cable for RPi 4
+* adafruit_blinka (circuitpython for RPi) only runs on 32 bit RPi OS. RPi Zero is 32 bit, but RPi 4 is 64 bit (necessarily?), so another reason to go with RPi Zero
+    * on the other hand, might not need circuitpython for UART GPS, and certainly not for USB GPS
+
+Adding Ethernet module to Pi Zero:
+
+https://www.berrybase.de/sensoren-module/funk-kommunikation/enc28j60-ethernet-modul
+https://tutorials-raspberrypi.com/raspberry-pi-zero-establishing-an-ethernet-connection-enc28j60/
+- uses SPI, requires:
+    - CE0 (GPIO8, Pin 24)
+    - MOSI (GPIO10, Pin 19)
+    - SCKL (GPIO11, Pin 23)
+    - MISO (GPIO9, Pin 21)
+    - (GPIO25, Pin 22)
+"In terms of speed, an SPI-powered Ethernet port can not connect to a built-in Ethernet port. Even a Wi-Fi connection is faster. In my tests, I had a download speed of about 5Mbit/s."
+
+---------------
+
+The Adafruit LSM6DS33 + LIS3MDL 9 DoF IMU is high precision, has handy QWIIC connector for I2C, and uses CircuitPython:
+
+https://www.adafruit.com/product/4485
+
+Commonly sold for the RPi in Germany:
+
+https://www.berrybase.de/sensoren-module/bewegung-distanz/adafruit-lsm6dsox-43-lis3mdl-pr-228-zisions-9-dof-imu
+
+Docs:
+
+https://learn.adafruit.com/st-9-dof-combo/overview
+https://github.com/adafruit/Adafruit_CircuitPython_LSM6DS
+https://github.com/adafruit/Adafruit_CircuitPython_LIS3MDL
+
+Comparison:
+
+https://learn.adafruit.com/adafruit-sensorlab-gyroscope-calibration/comparing-gyroscopes#lsm6dsox-5-7
+
+---------------
+
+GPS:
+
+Adafruit Ultimate GPS:
+https://www.adafruit.com/product/4279 - USB
+requires:
+    - USB port, should be easy to read from /dev/usb at 9600 baud
+https://www.adafruit.com/product/746 - breakout (non-USB)
+requires:
+    - 3.3 or 5 V
+    - RPi serial TX to GPS serial RX (9600 baud UART)
+    - RPi serial RX to GPS serial TX (9600 baud UART)
+https://www.adafruit.com/product/960 - external antenna
+http://www.intellamech.com/RaspberryPi-projects/rpi3_gps.html#_gps_using_usb_to_tll
+https://learn.adafruit.com/adafruit-ultimate-gps
+https://learn.adafruit.com/adafruit-ultimate-gps/circuitpython-parsing
+https://learn.adafruit.com/circuitpython-on-raspberrypi-linux/uart-serial
+https://github.com/adafruit/Adafruit_CircuitPython_GPS
+
+* Works on CircuitPython:
+
+https://learn.adafruit.com/circuitpython-on-raspberrypi-linux/circuitpython-raspi
+
+https://schneide.blog/2015/04/13/creating-a-gps-network-service-using-a-raspberry-pi-part-1/
+https://schneide.blog/2015/05/18/creating-a-gps-network-service-using-a-raspberry-pi-part-2/
