@@ -26,7 +26,7 @@ from adafruit_lis3mdl import LIS3MDL
 HOST, PORT = "localhost", 9999
 
 
-class TCPRequestHandler(socketserver.BaseRequestHandler):
+class TCPRequestHandler(socketserver.StreamRequestHandler):
     """Request handler class for TCP server, instantiated once per connection
     and port must be free"""
 
@@ -39,19 +39,24 @@ class TCPRequestHandler(socketserver.BaseRequestHandler):
     def handle(self):
         """Override the handle() method to implement communication with client"""
         # self.request is the TCP socket connected to the client
-        msg = self.request.recv(1024).strip().decode() # from bytes to str
-        print("{} wrote:".format(self.client_address[0]))
-        print(msg)
-        if str(msg) == 'acquire':
-            print('got acquire message')
-            imumag_data = self.get_imumag()
-            #gpsdata = get_gps()
-            data_packet = self.make_packet(imumag_data)
-            #self.request.sendall(b'got acquire message')
-            self.request.sendall(data_packet)
-        else:
-            # just send back the same data, but upper-cased
-            self.request.sendall(msg.upper().encode()) # from str to bytes
+        #msg = self.request.recv(1024).strip().decode() # from bytes to str
+        # self.rfile is a file-like object created by the handler;
+        # we can now use e.g. readline() instead of raw recv() calls:
+        while True:
+            msg = self.rfile.readline().strip().decode()
+            #print("{} wrote:".format(self.client_address[0]))
+            print(msg)
+            if msg == 'acquire':
+                #print('got acquire message')
+                imumag_data = self.get_imumag()
+                #gpsdata = get_gps()
+                data_packet = self.make_packet(imumag_data)
+                #self.request.sendall(b'got acquire message')
+                #self.request.sendall(data_packet)
+                # Likewise, self.wfile is a file-like object used to write back
+                # to the client:
+                #print(data_packet.decode())
+                self.wfile.write(data_packet)
 
     def get_imumag(self):
         ax, ay, az = self.imu.acceleration # m/s**2
@@ -63,7 +68,7 @@ class TCPRequestHandler(socketserver.BaseRequestHandler):
         pass
     '''
     def make_packet(self, imumag_data):
-        return b"%g, %g, %g, %g, %g, %g, %g, %g, %g" % imumag_data
+        return b"%g, %g, %g, %g, %g, %g, %g, %g, %g\n" % imumag_data
 
 if __name__ == "__main__":
     # Create the server, binding to HOST on PORT
