@@ -3,31 +3,34 @@
 see:
 
 https://docs.python.org/3/library/socketserver.html#socketserver-tcpserver-example
+
+Execute, optionally specifying host port:
+
+```
+python3 test_client.py <PORT>
+```
+
 """
 
 import sys
 import time
 import socket
 
-HOST, PORT = "localhost", 9999
+HOST, PORT = 'rpimv', 1987
 POLLINTERVAL = 1.0 # s
 
 if __name__ == "__main__":
     port = PORT
     if len(sys.argv) > 1:
         port = int(sys.argv[1])
-    # Create a socket (SOCK_STREAM means a TCP socket)
+    # Create a socket (SOCK_STREAM means a TCP socket):
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
-        # Connect to server and send data
+        # Connect to server and send data:
         sock.connect((HOST, port))
-        print("Connected...")
-        while True:
-            #sock.sendall(bytes(data + "\n", "utf-8"))
-            #sock.sendall(b'acquire')
-            sock.sendall(b'acquire\n')
-
+        print("Connected to %s:%s ..." % (HOST, port))
+        while True: # keep the socket open indefinitely
+            sock.sendall(b'acquire\n') # send acquire request
             # Receive data from the server:
             data = str(sock.recv(1024), "utf-8").strip()
             print(data)
-
             time.sleep(POLLINTERVAL)
