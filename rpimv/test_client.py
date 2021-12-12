@@ -16,7 +16,8 @@ import sys
 import time
 import socket
 
-HOST, PORT = 'rpimv', 1987
+#HOST, PORT = 'rpimv', 1987
+HOST, PORT = '192.168.178.40', 1987
 POLLINTERVAL = 1.0 # s
 
 if __name__ == "__main__":

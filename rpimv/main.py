@@ -1,11 +1,13 @@
 """On TCP request receipt, grab IMU and magnetometer readings from the
 Adafruit LIS3MDL + LSM6DSOX 9 DoF sensor I2C board and return them via TCP.
+Also, optionally acquire GPS data from an Adafruit Ultimate GPS USB board.
 
 Install required dependencies with:
 
 ```
 sudo pip3 install adafruit-circuitpython-lsm6ds
 sudo pip3 install adafruit-circuitpython-lis3mdl
+sudo pip3 install adafruit-circuitpython-gps
 ```
 
 Execute, optionally specifying host port:
@@ -19,6 +21,7 @@ see:
 https://learn.adafruit.com/st-9-dof-combo/python-circuitpython
 https://github.com/adafruit/Adafruit_CircuitPython_LSM6DS
 https://github.com/adafruit/Adafruit_CircuitPython_LIS3MDL
+https://github.com/adafruit/Adafruit_CircuitPython_GPS
 
 https://docs.python.org/3/library/socketserver.html#socketserver-tcpserver-example
 """
