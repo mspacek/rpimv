@@ -66,3 +66,18 @@ https://learn.adafruit.com/circuitpython-on-raspberrypi-linux/circuitpython-rasp
 
 https://schneide.blog/2015/04/13/creating-a-gps-network-service-using-a-raspberry-pi-part-1/
 https://schneide.blog/2015/05/18/creating-a-gps-network-service-using-a-raspberry-pi-part-2/
+
+
+----------
+
+Fix laggy mouse on RPi:
+
+https://thepihut.com/blogs/raspberry-pi-tutorials/fix-that-laggy-wifi-mouse
+
+To change the poll rate simply edit the /boot/cmdline.txt file:
+
+sudo nano /boot/cmdline.txt
+
+And add the following text at the end of the single line:
+
+usbhid.mousepoll=8

@@ -1,14 +1,21 @@
 A Python server for Raspberry Pi that serves IMU data over TCP.
-Uses Adafruit LIS3MDL + LSM6DSOX 9 DoF sensor I2C board.
+Uses Adafruit LIS3MDL + LSM6DSOX 9 DoF sensor I2C board. Also
+optionally serves GPS data from an Adafruit Ultimate GPS USB board.
 
 See:
 
 https://learn.adafruit.com/st-9-dof-combo/python-circuitpython
 
-Server side:
+To install in developer mode:
 
 ```
-$ python3 main.py
+sudo pip3 install -e .
+```
+
+To run the server:
+
+```
+$ python3 rpimv/main.py
 Serving on 192.168.178.39:9999 ...
 acquire
 acquire
@@ -16,10 +23,12 @@ acquire
 acquire
 ```
 
-Client side:
+or simply run the installed `rpimv` script from anywhere.
+
+To test the server with a simple client:
 
 ```
-$ python3 test_client.py
+$ python3 rpimv/test_client.py
 Connected to rpimv:9999 ...
 -3.30688,-0.184247,9.4349,-0.00610865,-0.00702495,-0.000305433,15.9456,7.79012,2.3385
 -3.29731,-0.17348,9.45165,-0.00641409,-0.0267254,-0.000763582,16.1502,7.98012,2.28004
