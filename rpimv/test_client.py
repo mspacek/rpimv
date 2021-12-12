@@ -30,8 +30,10 @@ if __name__ == "__main__":
         sock.connect((HOST, port))
         print("Connected to %s:%s ..." % (HOST, port))
         while True: # keep the socket open indefinitely
-            sock.sendall(b'acquire\n') # send acquire request
-            # Receive data from the server:
-            data = str(sock.recv(1024), "utf-8").strip()
-            print(data)
+            sock.sendall(b'acquire_imu\n') # send acquire request
+            imu_data = str(sock.recv(1024), "utf-8").strip() # receive data from server
+            print(imu_data)
+            sock.sendall(b'acquire_gps\n') # send acquire request
+            gps_data = str(sock.recv(1024), "utf-8").strip() # receive data from server
+            print(gps_data)
             time.sleep(POLLINTERVAL)
