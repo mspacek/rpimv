@@ -92,7 +92,7 @@ class TCPRequestHandler(socketserver.StreamRequestHandler):
                 packet = self.make_gps_packet(gps_data)
             else:
                 packet = "Unknown request %r" % msg
-            print(packet, end='')
+            #print(packet, end='')
             self.wfile.write(packet.encode()) # convert to bytes before writing
 
     def get_imumag(self):
