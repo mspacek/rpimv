@@ -57,24 +57,25 @@ class TCPRequestHandler(socketserver.StreamRequestHandler):
         i2c = board.I2C() # uses board.SCL and board.SDA
         self.imu = LSM6DSOX(i2c) # IMU chip instance
         self.mag = LIS3MDL(i2c) # magnetometer chip instance
-        self.init_gps()
+        self.gps = self.init_gps()
 
         socketserver.BaseRequestHandler.__init__(self, *args, **kwargs)
 
     def init_gps(self):
         """Try and initialize an Adafruit Ultimate GPS USB module instance"""
-        self.gps = None
+        gps = None
         try:
             uart = serial.Serial(SERIALPORT, baudrate=9600, timeout=10) # init serial port
-            self.gps = adafruit_gps.GPS(uart, debug=False) # GPS module instance
+            gps = GPS(uart, debug=False) # GPS module instance
             # turn on basic GGA and RMC info:
-            self.gps.send_command(b"PMTK314,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0")
+            gps.send_command(b"PMTK314,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0")
             # set update period to 1000 ms, i.e. 1 Hz:
-            self.gps.send_command(b"PMTK220,1000")
-            self.gps.update()
-        except:
+            gps.send_command(b"PMTK220,1000")
+            gps.update()
+        except Exception as e:
+            print(e)
             print('No Adafruit USB GPS device found on port %s' % SERIALPORT)
-            pass
+        return gps
 
     def handle(self):
         """Override the handle() method to implement communication with client"""
@@ -88,9 +89,9 @@ class TCPRequestHandler(socketserver.StreamRequestHandler):
                 gps_data = self.get_gps()
                 packet = self.make_gps_packet(gps_data)
             else:
-                packet = b"Unknown request %r" % msg
-            #print(packet.decode())
-            self.wfile.write(packet)
+                packet = "Unknown request %r" % msg
+            print(packet, end='')
+            self.wfile.write(packet.encode()) # convert to bytes before writing
 
     def get_imumag(self):
         """Get current IMU and magnetometer readings"""
@@ -101,32 +102,33 @@ class TCPRequestHandler(socketserver.StreamRequestHandler):
 
     def make_imumag_packet(self, imumag_data):
         """Convert imumag_data to csv byte string"""
-        return b"%g,%g,%g,%g,%g,%g,%g,%g,%g\n" % imumag_data
+        return "%g,%g,%g,%g,%g,%g,%g,%g,%g\n" % imumag_data
 
     def get_gps(self):
         """Try and get GPS data"""
-        if self.gps is None:
-            return 'NOGPS'
-        self.gps.update()
-        if not self.gps.has_fix:
-            return 'NOFIX'
-        lat = self.gps.latitude # deg
-        lon = self.gps.longitude # deg
-        alt = gps.altitude_m # meters
-        speed = gps.speed_knots # knots
+        gps = self.gps
+        if gps is None:
+            return 'NO_GPS_BOARD'
+        gps.update()
+        if not gps.has_fix:
+            return 'NO_GPS_FIX'
+        lat = gps.latitude # deg
+        lon = gps.longitude # deg
+        alt = gps.altitude_m or -1 # meters
+        #speed = gps.speed_knots # knots
         q = gps.fix_quality # integer, higher numbers -> better quality?
-        nsats = gps.satellites
-        t = gps.timestamp_utc # time.struct_time
+        nsats = gps.satellites or -1
+        t = gps.timestamp_utc # time.struct_time, in UTC
         dt = "%04d-%02d-%02d_%02d:%02d:%02d" % (t.tm_year, t.tm_mon, t.tm_mday,
-                                                t.tm_hour, t.tm_min, t.tm_sec) # ISO datetime
-        return lat, lon, alt, speed, q, nsats, dt
+                                                t.tm_hour, t.tm_min, t.tm_sec) # UTC datetime
+        return lat, lon, alt, q, nsats, dt
 
     def make_gps_packet(self, gps_data):
         """Convert imumag_data to csv byte string"""
         if type(gps_data) is str: # just an error message
-            return b"%s\n" % gps_data
+            return "%s\n" % gps_data
         else:
-            return b"%g,%g,%g,%g,%d,%d,%s\n" % gps_data
+            return "%g,%g,%g,%d,%d,%s\n" % gps_data
 
 
 if __name__ == "__main__":
