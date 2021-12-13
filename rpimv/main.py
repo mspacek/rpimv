@@ -2,13 +2,12 @@
 Adafruit LIS3MDL + LSM6DSOX 9 DoF sensor I2C board and return them via TCP.
 Also, optionally acquire GPS data from an Adafruit Ultimate GPS USB board.
 
-Install required dependencies with:
+Install dependencies automatically by running `setup.py` install script,
+or manually with:
 
-```
-sudo pip3 install adafruit-circuitpython-lsm6ds
-sudo pip3 install adafruit-circuitpython-lis3mdl
-sudo pip3 install adafruit-circuitpython-gps
-```
+$ sudo pip3 install adafruit-circuitpython-lsm6ds
+$ sudo pip3 install adafruit-circuitpython-lis3mdl
+$ sudo pip3 install adafruit-circuitpython-gps
 
 Execute, optionally specifying port, or host and port:
 
@@ -46,6 +45,8 @@ HOST = 'rpimv'
 
 # default TCP port to serve on:
 PORT = 1987
+
+# default serial port for GPS board:
 SERIALPORT = '/dev/ttyUSB0'
 
 
