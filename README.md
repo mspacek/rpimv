@@ -34,5 +34,22 @@ Connected to rpimv:1987 ...
 -3.30688,-0.184247,9.4349,-0.00610865,-0.00702495,-0.000305433,15.9456,7.79012,2.3385
 NO_GPS_FIX
 -3.29731,-0.17348,9.45165,-0.00641409,-0.0267254,-0.000763582,16.1502,7.98012,2.28004
-NO_GPS_FIX
+50.0000,10.0000,500.0,1,4,2021-12-12-11:01:00
 ```
+
+Comma separated IMU data:
+
+```
+ax, ay, az, rx, ry, rz, mx, my, mz
+```
+
+Where a* is acceleration (m/s^2), r* is rotation (rad/s), and m* is magnetic field strength
+(uT), on all 3 axes.
+
+Comma separated GPS data:
+
+```
+latitude, longitude, elevation, fix quality, num satellites, UTC datetime
+```
+
+where latitude and lognitude are in deg, and elevation is in m.
