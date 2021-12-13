@@ -10,11 +10,10 @@ sudo pip3 install adafruit-circuitpython-lis3mdl
 sudo pip3 install adafruit-circuitpython-gps
 ```
 
-Execute, optionally specifying host port:
+Execute, optionally specifying port, or host and port:
 
-```
-python3 main.py <PORT>
-```
+$ python3 main.py <PORT>
+$ python3 main.py <HOST> <PORT>
 
 see:
 
@@ -30,6 +29,7 @@ import sys
 import subprocess
 import socketserver
 import serial
+import datetime
 
 import board
 from adafruit_lsm6ds.lsm6dsox import LSM6DSOX
@@ -37,16 +37,16 @@ from adafruit_lis3mdl import LIS3MDL
 from adafruit_gps import GPS
 
 
-# TCP globals:
-#HOST = "localhost"
+# default TCP host to serve on:
+#HOST = "localhost" # i.e. 127.0.0.1
 # get first IP address returned by `hostname` shell command:
-HOST = subprocess.check_output(['hostname', '-I']).decode().split()[0]
+#HOST = subprocess.check_output(['hostname', '-I']).decode().split()[0]
 # or just use the DNS name as the host:
-#HOST = 'rpimv'
-PORT = 1987
-# GPS globals:
-SERIALPORT = '/dev/ttyUSB0'
+HOST = 'rpimv'
 
+# default TCP port to serve on:
+PORT = 1987
+SERIALPORT = '/dev/ttyUSB0'
 
 
 class TCPRequestHandler(socketserver.StreamRequestHandler):
@@ -81,7 +81,8 @@ class TCPRequestHandler(socketserver.StreamRequestHandler):
         """Override the handle() method to implement communication with client"""
         while True:
             msg = self.rfile.readline().strip().decode()
-            print(msg)
+            dt = datetime.datetime.now()
+            print(dt, msg)
             if msg == 'acquire_imu':
                 imumag_data = self.get_imumag()
                 packet = self.make_imumag_packet(imumag_data)
@@ -137,8 +138,9 @@ if __name__ == "__main__":
     if len(sys.argv) == 2:
         port = int(sys.argv[1])
     elif len(sys.argv) == 3:
-        host, port = int(sys.argv[1]), int(sys.argv[2])
+        host, port = sys.argv[1], int(sys.argv[2])
     with socketserver.TCPServer((host, port), TCPRequestHandler) as server:
         # start the server - this will continue running until interruped by Ctrl+C
-        print('Serving on %s:%s ...' % (host, port))
+        dt = datetime.datetime.now()
+        print(dt, 'Serving on %s:%d ...' % (host, port))
         server.serve_forever()

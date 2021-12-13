@@ -1,2 +1,2 @@
 #!/bin/sh
-python3 -m rpimv.main
+python3 -m rpimv.main "$@"
