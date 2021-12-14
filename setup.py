@@ -28,7 +28,8 @@ setup(name='rpimv',
       url='https://github.com/mspacek/rpimv',
       # include subfolders with code as additional packages
       packages=['rpimv'],
-      scripts=['bin/rpimv'],
+      scripts=['bin/rpimv',
+               'bin/rpimvcl'],
       install_requires=['adafruit-circuitpython-lsm6ds',
                         'adafruit-circuitpython-lis3mdl',
                         'adafruit-circuitpython-gps'

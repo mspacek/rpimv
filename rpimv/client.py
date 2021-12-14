@@ -6,10 +6,8 @@ https://docs.python.org/3/library/socketserver.html#socketserver-tcpserver-examp
 
 Execute, optionally specifying port, or host and port:
 
-```
-python3 test_client.py <PORT>
-python3 test_client.py <HOST> <PORT>
-```
+$ python3 client.py <PORT>
+$ python3 client.py <HOST> <PORT>
 
 """
 
@@ -17,10 +15,16 @@ import sys
 import time
 import socket
 
-# default TCP host and port to connect to:
-HOST, PORT = 'rpimv', 1987
-#HOST, PORT = '192.168.178.40', 1987
+# default TCP host to connect to:
+#HOST = "localhost" # i.e. '127.0.0.1'
+#HOST = '192.168.1.100'
+HOST = 'rpimv'
+
+# default TCP port to connect to:
+PORT = 1987
+
 POLLINTERVAL = 1.0 # s
+
 
 if __name__ == "__main__":
     host, port = HOST, PORT

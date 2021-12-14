@@ -4,8 +4,8 @@ optionally serves GPS data from an Adafruit Ultimate GPS USB board.
 
 See:
 
-https://learn.adafruit.com/st-9-dof-combo
-https://learn.adafruit.com/adafruit-ultimate-gps
+* https://learn.adafruit.com/st-9-dof-combo
+* https://learn.adafruit.com/adafruit-ultimate-gps
 
 To install in developer mode, including dependencies:
 
@@ -29,13 +29,14 @@ or simply run the installed `rpimv` script from anywhere.
 To test the server with a simple client:
 
 ```
-$ python3 rpimv/test_client.py
+$ python3 rpimv/client.py
 Connected to rpimv:1987 ...
 -3.30688,-0.184247,9.4349,-0.00610865,-0.00702495,-0.000305433,15.9456,7.79012,2.3385
 NO_GPS_FIX
 -3.29731,-0.17348,9.45165,-0.00641409,-0.0267254,-0.000763582,16.1502,7.98012,2.28004
 50.0000,10.0000,500.0,1,4,2021-12-12-11:01:00
 ```
+or simply run the installed `rpimvcl` script from anywhere.
 
 The returned comma separated IMU data are:
 
