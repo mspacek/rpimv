@@ -143,5 +143,5 @@ if __name__ == "__main__":
     with socketserver.TCPServer((host, port), TCPRequestHandler) as server:
         # start the server - this will continue running until interruped by Ctrl+C
         dt = datetime.datetime.now()
-        print(dt, 'Serving on %s:%d ...' % (host, port))
+        print(dt, 'Serving on %s:%d, Ctrl+C to cancel ...' % (host, port))
         server.serve_forever()

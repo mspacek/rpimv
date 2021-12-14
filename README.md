@@ -37,19 +37,22 @@ NO_GPS_FIX
 50.0000,10.0000,500.0,1,4,2021-12-12-11:01:00
 ```
 
-Comma separated IMU data:
+The returned comma separated IMU data are:
 
 ```
 ax, ay, az, rx, ry, rz, mx, my, mz
 ```
 
-Where a* is acceleration (m/s^2), r* is rotation (rad/s), and m* is magnetic field strength
-(uT), on all 3 axes.
+Where `a*` is acceleration (m/s<sup>2</sup>), `r*` is angular velocity (rad/s),
+and `m*` is magnetic field strength (uT), on all 3 axes.
 
-Comma separated GPS data:
+The returned comma separated GPS data are:
 
 ```
 latitude, longitude, elevation, fix quality, num satellites, UTC datetime
 ```
 
-where latitude and lognitude are in deg, and elevation is in m.
+where latitude and longitude are in deg, and elevation is in m.
+
+To automatically start `rpimv` in a terminal window on bootup, copy `bin/rpimv.desktop`
+to `/etc/xdg/autostart/`.

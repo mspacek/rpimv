@@ -22,7 +22,7 @@ from rpimv.__version__ import __version__
 setup(name='rpimv',
       version=__version__,
       license='BSD',
-      description="A Python server for Raspberry Pi that serves IMU data over TCP",
+      description="A Python server for Raspberry Pi that serves IMU & GPS data over TCP",
       author='Martin Spacek',
       author_email='git at mspacek mm st',
       url='https://github.com/mspacek/rpimv',

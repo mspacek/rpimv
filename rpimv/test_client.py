@@ -32,7 +32,7 @@ if __name__ == "__main__":
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
         # Connect to server and send data:
         sock.connect((host, port))
-        print("Connected to %s:%d ..." % (host, port))
+        print("Connected to %s:%d, Ctrl+C to cancel ..." % (host, port))
         while True: # keep the socket open indefinitely
             sock.sendall(b'acquire_imu\n') # send IMU acquire request
             imu_data = str(sock.recv(1024), "utf-8").strip() # receive data from server
