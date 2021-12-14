@@ -1,0 +1,6 @@
+[Desktop Entry]
+Type=Application
+Name=rpimv
+Comment=Serve IMU & GPS data over TCP
+Terminal=true
+Exec=lxterminal --title=rpimv --working-directory=/home/pi/rpimv --command="bash -c 'python3 -m rpimv.main; bash'"
