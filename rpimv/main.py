@@ -2,7 +2,7 @@
 Adafruit LIS3MDL + LSM6DSOX 9 DoF sensor I2C board and return them via TCP.
 Also, optionally acquire GPS data from an Adafruit Ultimate GPS USB board.
 
-Install dependencies automatically by running `setup.py` install script,
+Install dependencies automatically by running the `setup.py` install script,
 or manually with:
 
 $ sudo pip3 install adafruit-circuitpython-lsm6ds
@@ -120,10 +120,10 @@ class TCPRequestHandler(socketserver.StreamRequestHandler):
 
     def get_imumag(self):
         """Get current IMU and magnetometer readings"""
-        ax, ay, az = self.imu.acceleration # m/s**2
-        rx, ry, rz = self.imu.gyro # rad/s
-        mx, my, mz = self.mag.magnetic # uT
-        return ax, ay, az, rx, ry, rz, mx, my, mz
+        ax, ay, az = self.imu.acceleration # 3 axis acceleration, m/s**2
+        wx, wy, wz = self.imu.gyro # 3 axis angular velocity, rad/s
+        mx, my, mz = self.mag.magnetic # 3 axis magnetic field strength, uT
+        return ax, ay, az, wx, wy, wz, mx, my, mz
 
     def make_imumag_packet(self, imumag_data):
         """Convert imumag_data to csv byte string"""

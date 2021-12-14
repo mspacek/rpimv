@@ -41,10 +41,10 @@ or simply run the installed `rpimvcl` script from anywhere.
 The returned comma separated IMU data are:
 
 ```
-ax, ay, az, rx, ry, rz, mx, my, mz
+ax, ay, az, wx, wy, wz, mx, my, mz
 ```
 
-Where `a*` is acceleration (m/s<sup>2</sup>), `r*` is angular velocity (rad/s),
+Where `a*` is acceleration (m/s<sup>2</sup>), `w*` is angular velocity (rad/s),
 and `m*` is magnetic field strength (uT), on all 3 axes.
 
 The returned comma separated GPS data are:
