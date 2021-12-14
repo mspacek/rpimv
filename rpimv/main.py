@@ -49,6 +49,14 @@ PORT = 1987
 # default serial port for GPS board:
 SERIALPORT = '/dev/ttyUSB0'
 
+# default IMU and magnetometer ranges and data rates:
+ACCELRANGE = 2
+ACCELDATARATE = 4
+GYRORANGE = 0
+GYRODATARATE = 4
+MAGRANGE = 0
+MAGDATARATE = 1
+
 
 class TCPRequestHandler(socketserver.StreamRequestHandler):
     """Request handler class for TCP server, instantiated once per connection.
@@ -56,11 +64,26 @@ class TCPRequestHandler(socketserver.StreamRequestHandler):
 
     def __init__(self, *args, **kwargs):
         i2c = board.I2C() # uses board.SCL and board.SDA
-        self.imu = LSM6DSOX(i2c) # IMU chip instance
-        self.mag = LIS3MDL(i2c) # magnetometer chip instance
-        self.gps = self.init_gps()
-
+        self.imu = self.init_imu(i2c) # IMU chip instance
+        self.mag = self.init_mag(i2c) # magnetometer chip instance
+        self.gps = self.init_gps() # GPS board instance
         socketserver.BaseRequestHandler.__init__(self, *args, **kwargs)
+
+    def init_imu(self, i2c):
+        """Initialize IMU"""
+        imu = LSM6DSOX(i2c)
+        imu.accelerometer_range = ACCELRANGE
+        imu.accelerometer_data_rate = ACCELDATARATE
+        imu.gyro_range = GYRORANGE
+        imu.gyro_data_rate = GYRODATARATE
+        return imu
+
+    def init_mag(self, i2c):
+        """Initialize magnetometer"""
+        mag = LIS3MDL(i2c)
+        mag.range = MAGRANGE
+        mag.data_rate = MAGDATARATE
+        return mag
 
     def init_gps(self):
         """Try and initialize an Adafruit Ultimate GPS USB module instance"""
